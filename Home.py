@@ -1,4 +1,11 @@
 import streamlit as st
+from PIL import Image
+
+image = Image.open('combined.jpeg')
+st.set_page_config(page_title='Howard County Council Candidate Contributions', 
+            page_icon=image)
+
+st.sidebar.image("combined.jpeg", use_column_width=True)
 
 st.title('Howard County Local Election Campaign Finance')
 st.write(
@@ -60,55 +67,3 @@ hide_st_style = """
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
-
-# plot_data = st.sidebar.checkbox('Show Plots for Selected Criteria', value=True)
-
-# if plot_data:
-
-#         plots = ['Developer Percent Contribution','Top N Contributions', 'By Filing Period']
-#         picked_plot = st.sidebar.selectbox('Pick a Plot', plots)
-#         #st.write(f'{len(picked_plot)}')
-#         if picked_plot == plots[0]:
-#             if developer:
-#                 try:
-#                    # st.write('Select the "Display Developer Contributions" checkbox')
-#                     data_set=['Developer Donations', 'Remaining']
-#                     percent_dev = df_master[mask]['Contribution Amount'].sum()/df_master[base_mask]['Contribution Amount'].sum()
-#                     values = [percent_dev, 1-percent_dev]
-#                     fig = px.pie(df_master['Contribution Amount'], values=values, names=data_set)
-#                     st.caption('Percent share of contributions from developers. Note that some candidates\
-#                         participate in public financing or did not file for the selected criteria.')
-#                     display = st.plotly_chart(fig)
-#                 except ValueError:
-#                     st.markdown('### Data does not exist for selected criteria.')
-#                     st.code('Try a different filing period.')
-#             else:
-#                 st.markdown('Select the **Display Developer Contributions Only** checkbox')
-#         elif picked_plot == plots[1]:
-#             n = st.sidebar.slider('How Many Contributions?:', 
-#                                     min_value = 10,
-#                                     max_value = 40)
-#             try:
-#                 table_cols = df_grouped_for_plot.reset_index().sort_values(by=['Total Contribution'], ascending = False).head(n)
-#                 candidate_names(candidates, table_cols, 'Receiving Committee')
-#                 fig = px.bar(table_cols, x=table_cols['Contributor Name'], y=table_cols['Total Contribution'],color=table_cols['Candidate Name'])
-#                 display = st.plotly_chart(fig)
-#             except ValueError:
-#                 st.markdown('### Data does not exist for selected criteria.')
-#                 st.code('Try a different filing period.')
-#         elif picked_plot == plots[2]:
-#             try:
-#                 if bar_mask:
-#                     df_master_bar = df_master[developer_filter]
-#                 else:
-#                     df_master_bar = df_master
-
-#                 contribution_by_filing_period = df_master_bar.groupby(['Candidate Name','Filing Period'])
-#                 contribution_by_filing_period=contribution_by_filing_period.agg(
-#                     TotalContribution =('Contribution Amount','sum')).reset_index()
-#                 fig = px.bar(contribution_by_filing_period, x = contribution_by_filing_period['Filing Period'], 
-#                             y=contribution_by_filing_period['TotalContribution'],color=contribution_by_filing_period['Candidate Name'])
-#                 display = st.plotly_chart(fig)
-#             except ValueError:
-#                 st.markdown('### Data does not exist for selected criteria.')
-#                 st.code('Try a different filing period.')
